@@ -37,6 +37,20 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         insertItem(newItem)
     }
 
+    private fun updateItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.update(item)
+        }
+    }
+
+
+    fun sellItem(item: Item) {
+        if (item.quantityInStock > 0) {
+            val newItem = item.copy(quantityInStock = item.quantityInStock - 1)
+            updateItem(newItem)
+        }
+    }
+
     /**
      * Launching a new coroutine to insert an item in a non-blocking way
      */
@@ -72,6 +86,7 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         return itemDao.getItem(id).asLiveData()
     }
 }
+
 
 /**
  * Factory class to instantiate the [ViewModel] instance.
