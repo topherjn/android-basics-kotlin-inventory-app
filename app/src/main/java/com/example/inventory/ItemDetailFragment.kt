@@ -79,11 +79,14 @@ class ItemDetailFragment : Fragment() {
         }
     }
 
+
+
     private fun bind(item: Item) {
         binding.apply {
             itemName.text = item.itemName
             itemPrice.text = item.getFormattedPrice()
             itemCount.text = item.quantityInStock.toString()
+            sellItem.isEnabled = viewModel.isStockAvailable(item)
             sellItem.setOnClickListener { viewModel.sellItem(item) }
         }
     }
